@@ -5,7 +5,7 @@ on:
     paths:
       - 'MLproject'
       - 'conda.yaml'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/cii.yml'
       - 'modelling.py'
     branches:
       - main
