@@ -49,18 +49,17 @@ jobs:
           git commit -m "Add MLflow run artifacts [skip ci]" || echo "No changes to commit"
           git push || echo "Nothing to push"
 
-      - name: Build Docker Image from MLflow Model
-        run: |
-          source $CONDA/etc/profile.d/conda.sh
-          conda activate mental-health-ci
-          latest_run=$(ls .mlruns/0 | head -n 1)
-          echo "Building Docker image for run: $latest_run"
-          docker build -t nfvalennn/mental-health-mlflow:latest
+      - name: Build Docker Image
+        run: docker build -t nfvalennn/mental-health-mlflow:latest .
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker Image
-        run: docker tag mental-health-mlflow:latest nfvalennn/mental-health-mlflow:latest && docker push nfvalennn/mental-health-mlflow:latest
+      - name: Tag Docker Image
+        run: docker tag mental-health-mlflow:latest nfvalennn/mental-health-mlflow:latest
+
+      - name: Push Docker Image to DockerHub
+        run: docker push nfvalennn/mental-health-mlflow:latest
