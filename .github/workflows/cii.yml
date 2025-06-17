@@ -49,18 +49,18 @@ jobs:
           git commit -m "Add MLflow run artifacts [skip ci]" || echo "No changes to commit"
           git push || echo "Nothing to push"
 
-      - name: Build Docker Image from MLflow Model
-        run: |
-          docker build -t nfvalennn/mental-health-mlflow:latest
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Tag Docker Image
-        run: docker tag mental-health-mlflow:latest nfvalennn/mental-health-mlflow:latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Push Docker Image
-        run: docker tag mental-health-mlflow:latest nfvalennn/mental-health-mlflow:latest && docker push nfvalennn/mental-health-mlflow:latest
-
+      - name: Build and push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: nfvalenn142/mental-health-mlflow:latest
