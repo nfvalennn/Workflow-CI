@@ -1,0 +1,12 @@
+name: mental-health-ci
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - mlflow
+      - python-dotenv
+      - pandas
+      - scikit-learn
